@@ -1,0 +1,18 @@
+syntax = "proto2";
+
+package tutorial;
+
+option java_package = "org.ivcode.stonks.repository.yahoo.websocket";
+option java_outer_classname = "YahooProto";
+
+message Quote {
+  optional string symbol = 1;
+  optional float regularMarketPrice = 2;
+  optional sint64 regularMarketTime = 3;
+  optional string currency = 4;
+  optional string exchange = 5;
+  optional float regularMarketChangePercent = 8;
+  optional sint32 regularMarketVolume = 9;
+  optional float regularMarketChange = 12;
+  optional string lastMarket = 31;
+}

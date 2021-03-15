@@ -1,0 +1,20 @@
+server:
+  port : 8080
+stonks:
+  config: stonks.json
+ally:
+  baseUrl: 'https://api.tradeking.com/v1'
+  authorizeUrl: 'https://developers.tradeking.com/oauth/authorize?oauth_token=%s'
+  requestTokenResource: 'https://developers.tradeking.com/oauth/request_token'
+  accessTokenResource: https://developers.tradeking.com/oauth/access_token
+  consumerKey: 
+  consumeSecret:  
+  oauthToken: 
+  oauthTokenSecret: 
+  account: 
+yahoo:
+  query1Url: 'https://query1.finance.yahoo.com'
+  classicUrl: 'https://finance.yahoo.com'
+  webSocket: 'wss://streamer.finance.yahoo.com'
+simulator:
+  daysToSettle: 3
