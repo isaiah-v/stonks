@@ -1,6 +1,8 @@
 FROM adoptopenjdk:11-jre-hotspot
 
-RUN mkdir /opt/app
-COPY build/libs/stonks.jar /opt/app
+RUN mkdir /app/workspace
+COPY build/libs/stonks.jar /app
 
-CMD ["java", "-jar", "/opt/app/stonks.jar"]
+WORKDIR /app/workspace
+
+CMD ["java", "-jar", "/app/stonks.jar"]
