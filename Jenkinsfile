@@ -36,7 +36,7 @@ pipeline {
                 sh "docker manifest push --insecure --purge \044DOCKER_REGISTRY/$PROJECT_NAME:latest"
             }
         }
-	state('Deploy') {
+	stage('Deploy') {
             agent {
                 label 'amd64'
             }
