@@ -14,9 +14,9 @@ pipeline {
                 label 'amd64'
             }
             steps {
-        build('amd64');
-        deployArtifacts('amd64');
-        clean('amd64');
+                buildArtifacts('amd64');
+                deployArtifacts('amd64');
+                cleanArtifacts('amd64');
             }
         }
         stage('Build arm64') {
@@ -24,9 +24,9 @@ pipeline {
                 label 'aarch64'
             }
             steps {
-        build('arm64');
-        deployArtifacts('arm64');
-        clean('arm64');
+                buildArtifacts('arm64');
+                deployArtifacts('arm64');
+                cleanArtifacts('arm64');
             }
         }
         stage('Update Manifest') {
@@ -49,7 +49,7 @@ pipeline {
     }
 }
 
-def build(arch) {
+def buildArtifacts(arch) {
     echo 'Building...'
 
     sh "echo ${getVersion()} > src/main/resources/version"
@@ -65,14 +65,14 @@ def deployArtifacts(arch) {
     sh "docker push \044DOCKER_REGISTRY/$PROJECT_NAME:${arch}-latest"
 }
 
-def clean(arch) {
+def cleanArtifacts(arch) {
     echo 'Cleaning...'
     sh "docker rmi \044DOCKER_REGISTRY/$PROJECT_NAME:${arch}-latest"
 }
 
 def rundeckDeploy() {
     echo 'Deploy Application...'
-    sh "curl https://ci.ivcode.org/rundeck/api/36/job/${RUNDECK_JOB_ID}/executions?authtoken=\044RUNDECK_TOKEN"
+    sh "curl --request POST https://ci.ivcode.org/rundeck/api/36/job/${RUNDECK_JOB_ID}/executions?authtoken=\044RUNDECK_TOKEN"
 }
 
 def getVersion() {
