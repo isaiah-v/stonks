@@ -41,7 +41,7 @@ pipeline {
                 label 'amd64'
             }
             steps {
-                
+                sh "echo TODO"
             }
 	}
     }
