@@ -1,10 +1,12 @@
 pipeline {
     agent none
 
-	environment {
-            PROJECT_NAME = 'stonks'
-            DOCKER_REGISTRY = credentials('HOST_DOCKER_REGISTRY')
-  	}
+    environment {
+        PROJECT_NAME = 'stonks'
+        DOCKER_REGISTRY = credentials('HOST_DOCKER_REGISTRY')
+        RUNDECK_JOB_ID = '71dddb62-597c-4f03-b166-bf1590fb76f4'
+        RUNDECK_TOKEN = credentials('RUNDECK_TOKEN')
+    }
 
     stages {
         stage('Build amd64') {
@@ -12,9 +14,9 @@ pipeline {
                 label 'amd64'
             }
             steps {
-                build('amd64');
-		deploy('amd64');
-		clean('amd64');
+        build('amd64');
+        deployArtifacts('amd64');
+        clean('amd64');
             }
         }
         stage('Build arm64') {
@@ -22,9 +24,9 @@ pipeline {
                 label 'aarch64'
             }
             steps {
-                build('arm64');
-		deploy('arm64');
-		clean('arm64');
+        build('arm64');
+        deployArtifacts('arm64');
+        clean('arm64');
             }
         }
         stage('Update Manifest') {
@@ -36,14 +38,14 @@ pipeline {
                 sh "docker manifest push --insecure --purge \044DOCKER_REGISTRY/$PROJECT_NAME:latest"
             }
         }
-	stage('Deploy') {
+        stage('Rundeck Deploy') {
             agent {
                 label 'amd64'
             }
             steps {
-                sh "echo TODO"
+                rundeckDeploy();
             }
-	}
+        }
     }
 }
 
@@ -58,7 +60,7 @@ def build(arch) {
     sh "docker build --tag \044DOCKER_REGISTRY/$PROJECT_NAME:${arch}-latest ."
 }
 
-def deploy(arch) {
+def deployArtifacts(arch) {
     echo 'Deploying...'
     sh "docker push \044DOCKER_REGISTRY/$PROJECT_NAME:${arch}-latest"
 }
@@ -66,6 +68,11 @@ def deploy(arch) {
 def clean(arch) {
     echo 'Cleaning...'
     sh "docker rmi \044DOCKER_REGISTRY/$PROJECT_NAME:${arch}-latest"
+}
+
+def rundeckDeploy() {
+    echo 'Deploy Application...'
+    sh "curl https://ci.ivcode.org/rundeck/api/36/job/${RUNDECK_JOB_ID}/executions?authtoken=\044RUNDECK_TOKEN"
 }
 
 def getVersion() {
