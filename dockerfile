@@ -1,6 +1,6 @@
 FROM adoptopenjdk:11-jre-hotspot
 
-RUN mkdir /app/workspace
+RUN mkdir -p /app/workspace
 COPY build/libs/stonks.jar /app
 
 WORKDIR /app/workspace
