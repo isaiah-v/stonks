@@ -13,28 +13,28 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                build();
+                doBuild();
             }
         }
         stage('Deploy') {
             steps {
-                deploy();
+                doDeploy();
             }
         }
         stage('Clean') {
             steps {
-                clean();
+                doClean();
             }
         }
         stage('Run') {
             steps {
-                run();
+                doRun();
             }
         }
     }
 }
 
-def build() {
+def doBuild() {
     echo 'Building...'
 
     sh "echo ${getVersion()} > src/main/resources/version"
@@ -46,7 +46,7 @@ def build() {
     sh "docker build --platform arm64 --tag \044DOCKER_REGISTRY/$PROJECT_NAME:arm64-latest ."
 }
 
-def deploy() {
+def doDeploy() {
     echo 'Deploying...'
     
     sh "docker push \044DOCKER_REGISTRY/$PROJECT_NAME:amd64-latest"
@@ -56,14 +56,14 @@ def deploy() {
     sh "docker manifest push --insecure --purge \044DOCKER_REGISTRY/$PROJECT_NAME:latest"
 }
 
-def clean() {
+def doClean() {
     echo 'Cleaning...'
     
     sh "docker rmi \044DOCKER_REGISTRY/$PROJECT_NAME:amd64-latest"
     sh "docker rmi \044DOCKER_REGISTRY/$PROJECT_NAME:arm64-latest"
 }
 
-def run() {
+def doRun() {
     echo 'Running...'
 
     echo 'Deploying Application...'
