@@ -6,7 +6,7 @@ pipeline {
     environment {
         PROJECT_NAME = 'stonks'
         DOCKER_REGISTRY = credentials('HOST_DOCKER_REGISTRY')
-        RUNDECK_JOB_ID = '71dddb62-597c-4f03-b166-bf1590fb76f4'
+        RUNDECK_JOB_ID = '69a6482f-c285-4e14-a915-03f5b4e665f4'
         RUNDECK_TOKEN = credentials('RUNDECK_TOKEN')
     }
 
