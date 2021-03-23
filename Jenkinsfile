@@ -9,16 +9,6 @@ pipeline {
     }
 
     stages {
-        stage('Build Amd64') {
-            agent {
-                label 'amd64'
-            }
-            steps {
-                doBuild('amd64');
-                doDeploy('amd64');
-                doClean('amd64');
-            }
-        }
         stage('Build Arm64') {
             agent {
                 label 'arm64'
@@ -29,11 +19,14 @@ pipeline {
                 doClean('arm64');
             }
         }
-        stage('Update Manifest') {
+        stage('Build Amd64') {
             agent {
                 label 'amd64'
             }
             steps {
+                doBuild('amd64');
+                doDeploy('amd64');
+                doClean('amd64');
                 doManifest();
             }
         }
