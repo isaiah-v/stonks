@@ -11,19 +11,31 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Build Amd64') {
+            agent {
+                label 'amd64'
+            }
             steps {
-                doBuild();
+                arch = 'amd64';
+                doBuild(arch);
+                doDeploy(arch);
+                doClean(arch);
             }
         }
-        stage('Deploy') {
+        stage('Build Arm64') {
+            agent {
+                label 'arm64'
+            }
             steps {
-                doDeploy();
+                arch = 'arm64';
+                doBuild(arch);
+                doDeploy(arch);
+                doClean(arch);
             }
         }
-        stage('Clean') {
+        stage('Update Manifest') {
             steps {
-                doClean();
+                doManifest();
             }
         }
         stage('Run') {
@@ -34,33 +46,30 @@ pipeline {
     }
 }
 
-def doBuild() {
+def doBuild(arch) {
     echo 'Building...'
 
     sh "echo ${getVersion()} > src/main/resources/version"
-
     sh 'chmod +x ./gradlew'
     sh './gradlew build'
     
-    sh "docker build --platform amd64 --tag \044DOCKER_REGISTRY/$PROJECT_NAME:amd64-latest ."
-    sh "docker build --platform arm64 --tag \044DOCKER_REGISTRY/$PROJECT_NAME:arm64-latest ."
+    sh "docker build --tag \044DOCKER_REGISTRY/$PROJECT_NAME:${arch}-latest ."
 }
 
-def doDeploy() {
+def doDeploy(arch) {
     echo 'Deploying...'
     
-    sh "docker push \044DOCKER_REGISTRY/$PROJECT_NAME:amd64-latest"
-    sh "docker push \044DOCKER_REGISTRY/$PROJECT_NAME:arm64-latest"
-    
-    sh "docker manifest create --insecure --amend \044DOCKER_REGISTRY/$PROJECT_NAME:latest \044DOCKER_REGISTRY/$PROJECT_NAME:amd64-latest \044DOCKER_REGISTRY/$PROJECT_NAME:arm64-latest"
-    sh "docker manifest push --insecure --purge \044DOCKER_REGISTRY/$PROJECT_NAME:latest"
+    sh "docker push \044DOCKER_REGISTRY/$PROJECT_NAME:${arch}-latest"
 }
 
-def doClean() {
+def doClean(arch) {
     echo 'Cleaning...'
     
-    sh "docker rmi \044DOCKER_REGISTRY/$PROJECT_NAME:amd64-latest"
-    sh "docker rmi \044DOCKER_REGISTRY/$PROJECT_NAME:arm64-latest"
+    sh "docker rmi \044DOCKER_REGISTRY/$PROJECT_NAME:${arch}-latest"
+}
+def doManifest() {
+    sh "docker manifest create --insecure --amend \044DOCKER_REGISTRY/$PROJECT_NAME:latest \044DOCKER_REGISTRY/$PROJECT_NAME:amd64-latest \044DOCKER_REGISTRY/$PROJECT_NAME:arm64-latest"
+    sh "docker manifest push --insecure --purge \044DOCKER_REGISTRY/$PROJECT_NAME:latest"
 }
 
 def doRun() {
