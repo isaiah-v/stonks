@@ -16,7 +16,7 @@ pipeline {
                 label 'amd64'
             }
             steps {
-                arch = 'amd64';
+                def arch = 'amd64';
                 doBuild(arch);
                 doDeploy(arch);
                 doClean(arch);
@@ -27,7 +27,7 @@ pipeline {
                 label 'arm64'
             }
             steps {
-                arch = 'arm64';
+                def arch = 'arm64';
                 doBuild(arch);
                 doDeploy(arch);
                 doClean(arch);
