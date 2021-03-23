@@ -30,11 +30,17 @@ pipeline {
             }
         }
         stage('Update Manifest') {
+            agent {
+                label 'amd64'
+            }
             steps {
                 doManifest();
             }
         }
         stage('Run') {
+            agent {
+                label 'amd64'
+            }
             steps {
                 doRun();
             }
