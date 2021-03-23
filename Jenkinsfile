@@ -1,7 +1,5 @@
 pipeline {
-    agent { 
-        label 'amd64'
-    }
+    agent none;
 
     environment {
         PROJECT_NAME = 'stonks'
@@ -16,10 +14,9 @@ pipeline {
                 label 'amd64'
             }
             steps {
-                def arch = 'amd64';
-                doBuild(arch);
-                doDeploy(arch);
-                doClean(arch);
+                doBuild('amd64');
+                doDeploy('amd64');
+                doClean('amd64');
             }
         }
         stage('Build Arm64') {
@@ -27,10 +24,9 @@ pipeline {
                 label 'arm64'
             }
             steps {
-                def arch = 'arm64';
-                doBuild(arch);
-                doDeploy(arch);
-                doClean(arch);
+                doBuild('arm64');
+                doDeploy('arm64');
+                doClean('arm64');
             }
         }
         stage('Update Manifest') {
