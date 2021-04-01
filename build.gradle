@@ -7,7 +7,7 @@
  */
 
 plugins {
-    id 'org.springframework.boot' version '2.4.3'
+    id 'org.springframework.boot' version '2.4.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
@@ -25,7 +25,8 @@ repositories {
 dependencies {
 	implementation 'commons-io:commons-io:2.8.0'
 
-	compile("org.springframework.boot:spring-boot-starter-web")
+	compile("org.springframework.boot:spring-boot-starter-web:2.4.4")
+	
 	compile("com.squareup.retrofit2:retrofit:2.8.1")
 	compile("com.squareup.retrofit2:converter-jackson:2.8.1")
 	compile("com.squareup.okhttp3:logging-interceptor:3.9.0")
