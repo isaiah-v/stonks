@@ -7,11 +7,11 @@ ally:
   authorizeUrl: 'https://developers.tradeking.com/oauth/authorize?oauth_token=%s'
   requestTokenResource: 'https://developers.tradeking.com/oauth/request_token'
   accessTokenResource: https://developers.tradeking.com/oauth/access_token
-  consumerKey: 
-  consumeSecret:  
-  oauthToken: 
-  oauthTokenSecret: 
-  account: 
+  consumerKey: ${ally.consumerKey}
+  consumeSecret: ${ally.consumeSecret}
+  oauthToken: ${ally.oauthToken}
+  oauthTokenSecret: ${ally.oauthTokenSecret}
+  account: ${ally.oauthTokenSecret}
 yahoo:
   query1Url: 'https://query1.finance.yahoo.com'
   classicUrl: 'https://finance.yahoo.com'
