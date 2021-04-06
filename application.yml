@@ -11,7 +11,7 @@ ally:
   consumeSecret: ${ally.consumeSecret}
   oauthToken: ${ally.oauthToken}
   oauthTokenSecret: ${ally.oauthTokenSecret}
-  account: ${ally.oauthTokenSecret}
+  account: ${ally.account}
 yahoo:
   query1Url: 'https://query1.finance.yahoo.com'
   classicUrl: 'https://finance.yahoo.com'
