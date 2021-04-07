@@ -5,4 +5,4 @@ COPY build/libs/stonks.jar /app
 
 WORKDIR /app/workspace
 
-CMD ["java", "-jar", "/app/stonks.jar"]
+CMD ["java", "-Djava.security.egd=file:/dev/urandom", "-jar", "/app/stonks.jar"]
